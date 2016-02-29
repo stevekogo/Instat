@@ -120,11 +120,7 @@ Public Class ucrReceiverMultiple
         Dim strTemp As String = ""
         Dim i As Integer
         If lstSelectedVariables.Items.Count = 1 Then
-            If bWithQuotes Then
-                strTemp = Chr(34) & lstSelectedVariables.Items(0).Text & Chr(34)
-            Else
-                strTemp = lstSelectedVariables.Items(0).Text
-            End If
+            strTemp = Chr(34) & lstSelectedVariables.Items(0).Text & Chr(34)
         ElseIf lstSelectedVariables.Items.Count > 1 Then
             strTemp = "c" & "("
             For i = 0 To lstSelectedVariables.Items.Count - 1

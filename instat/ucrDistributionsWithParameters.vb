@@ -20,7 +20,6 @@ Public Class ucrDistributionsWithParameters
     Public lstParameterLabels As New List(Of Label)
     Public lstParameterTextBoxes As New List(Of TextBox)
     Public lstCurrArguments As New List(Of String)
-    Public bParametersFilled As Boolean = False
 
     Private Sub ucrDistributionsWithParameters_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetParameters()
@@ -61,6 +60,7 @@ Public Class ucrDistributionsWithParameters
         If clsCurrDistribution IsNot Nothing Then
             lstCurrArguments.Clear()
             clsCurrRFunction.ClearParameters()
+            IncludeFunctionParameter()
             For i = 0 To clsCurrDistribution.clsParameters.Count - 1
                 lstParameterLabels(i).Text = translate(clsCurrDistribution.clsParameters(i).strNameTag)
                 lstCurrArguments.Add(clsCurrDistribution.clsParameters(i).strArgumentName)
@@ -71,16 +71,6 @@ Public Class ucrDistributionsWithParameters
                     lstParameterTextBoxes(i).Clear()
                 End If
             Next
-            bParametersFilled = False
-        End If
-    End Sub
-
-    Public Sub CheckParametersFilled()
-        If (Not txtParameter1.Visible Or txtParameter1.Text <> "") And (Not txtParameter2.Visible Or txtParameter2.Text <> "") And (Not txtParameter3.Visible Or txtParameter3.Text <> "") Then
-            IncludeFunctionParameter()
-            bParametersFilled = True
-        Else
-            bParametersFilled = False
         End If
     End Sub
 
@@ -88,23 +78,15 @@ Public Class ucrDistributionsWithParameters
         SetParameters()
     End Sub
 
-    Public Event ParameterChanged()
-
     Private Sub txtParameter1_Leave(sender As Object, e As EventArgs) Handles txtParameter1.Leave
-        AddParameter(lstCurrArguments(0), txtParameter1.Text)
-        CheckParametersFilled()
-        RaiseEvent ParameterChanged()
+        clsCurrRFunction.AddParameter(lstCurrArguments(0), txtParameter1.Text)
     End Sub
 
     Private Sub txtParameter2_Leave(sender As Object, e As EventArgs) Handles txtParameter2.Leave
-        AddParameter(lstCurrArguments(1), txtParameter2.Text)
-        CheckParametersFilled()
-        RaiseEvent ParameterChanged()
+        clsCurrRFunction.AddParameter(lstCurrArguments(1), txtParameter2.Text)
     End Sub
 
     Private Sub txtParameter3_Leave(sender As Object, e As EventArgs) Handles txtParameter3.Leave
-        AddParameter(lstCurrArguments(2), txtParameter3.Text)
-        CheckParametersFilled()
-        RaiseEvent ParameterChanged()
+        clsCurrRFunction.AddParameter(lstCurrArguments(2), txtParameter3.Text)
     End Sub
 End Class

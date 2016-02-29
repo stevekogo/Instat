@@ -43,7 +43,7 @@ Public Class dlgRank
 
     'This runs on load and after anything is changed on the dialog.
     Private Sub TestOKEnabled()
-        If ucrReceiverRank.IsEmpty() = False Then
+        If ucrReceiverRank.GetVariableNames() <> "" Then
             ucrBase.OKEnabled(True)
         Else
             ucrBase.OKEnabled(False)
@@ -101,13 +101,7 @@ Public Class dlgRank
 
     'Use this event to see when something has changed in a receiver
     Private Sub ucrReceiverRank_SelectionChanged() Handles ucrReceiverRank.SelectionChanged
-        If Not ucrReceiverRank.IsEmpty Then
-            ucrBase.clsRsyntax.AddParameter("x", ucrReceiverRank.GetVariableNames(False))
-        Else
-            ucrBase.clsRsyntax.RemoveParameter("x")
-        End If
-
-
+        ucrBase.clsRsyntax.AddParameter("x", clsRFunctionParameter:=ucrReceiverRank.GetVariables())
         TestOKEnabled()
     End Sub
 

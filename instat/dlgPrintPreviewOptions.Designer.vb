@@ -156,7 +156,6 @@ Partial Class dlgPrintPreviewOptions
         Me.Controls.Add(Me.pnlEditor)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "dlgPrintPreviewOptions"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Print and Preview Options"
         Me.pnlEditor.ResumeLayout(False)
         Me.pnlLog.ResumeLayout(False)

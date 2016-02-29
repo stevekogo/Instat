@@ -33,8 +33,7 @@ Public Class dlgStack
     End Sub
 
     Private Sub ReopenDialog()
-        'TODO this is a work around for AssignTo not clearing in RSyntax
-        ucrNewDataFrameName.SetName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
+        SetNewDataFrameName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
     End Sub
 
     Private Sub TestOKEnabled()
@@ -47,32 +46,33 @@ Public Class dlgStack
 
     Private Sub SetDefaults()
         ucrNewDataFrameName.Reset()
-        ucrNewDataFrameName.SetName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
+        SetNewDataFrameName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
         ucrSelectorStack.Reset()
         ucrReceiverColumnsToBeStack.SetMeAsReceiver()
         chkIDVariables.Checked = False
         ucrIDVariablesReceiver.Visible = False
-        SetStackIntoText("value")
-        SetFactorIntoText("variable")
+        SetStackIntoText("Value")
+        SetFactorIntoText("Variable")
         ucrNewDataFrameName.bUserTyped = False
         autoTranslate(Me)
+
     End Sub
 
     Private Sub SetFactorIntoText(strNewVal As String)
         txtFactorInto.Text = strNewVal
-        If txtFactorInto.Text = "" Or (txtFactorInto.Text = "variable" AndAlso (Not frmMain.clsInstatOptions.bIncludeRDefaultParameters)) Then
-            ucrBase.clsRsyntax.RemoveParameter("variable.name")
-        Else
+        If txtFactorInto.Text <> "" Then
             ucrBase.clsRsyntax.AddParameter("variable.name", Chr(34) & txtFactorInto.Text & Chr(34))
+        Else
+            ucrBase.clsRsyntax.RemoveParameter("variable.name")
         End If
     End Sub
 
     Private Sub SetStackIntoText(strNewVal As String)
         txtStackDataInto.Text = strNewVal
-        If txtStackDataInto.Text = "" Or (txtStackDataInto.Text = "value" AndAlso (Not frmMain.clsInstatOptions.bIncludeRDefaultParameters)) Then
-            ucrBase.clsRsyntax.RemoveParameter("value.name")
-        Else
+        If txtStackDataInto.Text <> "" Then
             ucrBase.clsRsyntax.AddParameter("value.name", Chr(34) & txtStackDataInto.Text & Chr(34))
+        Else
+            ucrBase.clsRsyntax.RemoveParameter("value.name")
         End If
     End Sub
 
@@ -122,15 +122,29 @@ Public Class dlgStack
         TestOKEnabled()
     End Sub
 
+    Private Sub ucrNewDataFrameName_Leave(sender As Object, e As EventArgs) Handles ucrNewDataFrameName.Leave
+        SetNewDataFrameName(ucrNewDataFrameName.txtValidation.Text)
+    End Sub
+
     Private Sub ucrDataFrameAddRemove_DataFrameChanged() Handles ucrSelectorStack.DataFrameChanged
         'Always change the data parameter when data frame changed.
         ucrBase.clsRsyntax.AddParameter("data", clsRFunctionParameter:=ucrSelectorStack.ucrAvailableDataFrames.clsCurrDataFrame)
 
         'For Stack ucrNewDataFrameName may also be changed when data frame changed.
         If Not ucrNewDataFrameName.bUserTyped Then
-            ucrNewDataFrameName.SetName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
+            SetNewDataFrameName(ucrSelectorStack.ucrAvailableDataFrames.cboAvailableDataFrames.Text & "_stacked")
         End If
 
+    End Sub
+
+    Private Sub SetNewDataFrameName(strNewVal As String)
+        If ucrNewDataFrameName.IsValidRString(strNewVal) Then
+            ucrNewDataFrameName.txtValidation.Text = strNewVal
+            ucrBase.clsRsyntax.SetAssignTo(ucrNewDataFrameName.txtValidation.Text, strTempDataframe:=ucrNewDataFrameName.txtValidation.Text)
+        Else
+            ucrNewDataFrameName.txtValidation.Text = ""
+            ucrBase.clsRsyntax.RemoveAssignTo()
+        End If
     End Sub
 
     Private Sub chkIDVariables_KeyPress(sender As Object, e As KeyPressEventArgs) Handles chkIDVariables.KeyPress
@@ -146,13 +160,5 @@ Public Class dlgStack
     Private Sub ucrBase_ClickReset(sender As Object, e As EventArgs) Handles ucrBase.ClickReset
         SetDefaults()
         TestOKEnabled()
-    End Sub
-
-    Private Sub ucrNewDataFrameName_NameChanged() Handles ucrNewDataFrameName.NameChanged
-        If ucrNewDataFrameName.txtValidation.Text <> "" Then
-            ucrBase.clsRsyntax.SetAssignTo(ucrNewDataFrameName.txtValidation.Text, strTempDataframe:=ucrNewDataFrameName.txtValidation.Text)
-        Else
-            ucrBase.clsRsyntax.RemoveAssignTo()
-        End If
     End Sub
 End Class
