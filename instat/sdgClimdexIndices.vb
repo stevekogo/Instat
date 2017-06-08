@@ -262,6 +262,13 @@ Public Class sdgClimdexIndices
         clsRTwoArg4.AddParameter("ci", clsRFunctionParameter:=dlgClimdex.clsDefaultFunction)
         clsRTwoArg5.AddParameter("ci", clsRFunctionParameter:=dlgClimdex.clsDefaultFunction)
         clsRThreeArg.AddParameter("ci", clsRFunctionParameter:=dlgClimdex.clsDefaultFunction)
+        clsROneArg.SetPackageName("climdex.pcic")
+        clsRTwoArg1.SetPackageName("climdex.pcic")
+        clsRTwoArg2.SetPackageName("climdex.pcic")
+        clsRTwoArg3.SetPackageName("climdex.pcic")
+        clsRTwoArg4.SetPackageName("climdex.pcic")
+        clsRTwoArg5.SetPackageName("climdex.pcic")
+        clsRThreeArg.SetPackageName("climdex.pcic")
         InitialiseTabs()
         bControlsInitialised = True
     End Sub
@@ -390,29 +397,6 @@ Public Class sdgClimdexIndices
         End If
     End Sub
 
-    Private Sub lblN_Click(sender As Object, e As EventArgs) Handles lblN.Click
-
-    End Sub
-
-    Private Sub ucrInputPrecQtiles_Load(sender As Object, e As EventArgs) Handles ucrInputPrecQtiles.Load
-
-    End Sub
-
-    Private Sub lblPrecQuantiles_Click(sender As Object, e As EventArgs) Handles lblPrecQuantiles.Click
-
-    End Sub
-
-    Private Sub ucrInputTempQtiles_Load(sender As Object, e As EventArgs) Handles ucrInputTempQtiles.Load
-
-    End Sub
-
-    Private Sub lblTempQuantiles_Click(sender As Object, e As EventArgs) Handles lblTempQuantiles.Click
-
-    End Sub
-
-    Private Sub grpBaseRange_Enter(sender As Object, e As EventArgs) Handles grpBaseRange.Enter
-
-    End Sub
 
     Public Sub SetRFunction(clsNewRFunction As RFunction, Optional bReset As Boolean = False)
         If Not bControlsInitialised Then
@@ -571,11 +555,11 @@ Public Class sdgClimdexIndices
     End Sub
 
     Private Sub InitialiseTabs()
-        For i = 0 To tbpClimdex.TabCount - 1
-            tbpClimdex.SelectedIndex = i
-        Next
-        tbpClimdex.TabPages(2).Enabled = False
-        tbpClimdex.TabPages(1).Enabled = False
-        tbpClimdex.SelectedIndex = 0
+        'For i = 0 To tbpClimdex.TabCount - 1
+        '    tbpClimdex.SelectedIndex = i
+        'Next
+        'tbpClimdex.TabPages(2).Enabled = False
+        'tbpClimdex.TabPages(1).Enabled = False
+        'tbpClimdex.SelectedIndex = 0
     End Sub
 End Class
