@@ -477,7 +477,7 @@ Public Class ucrFactor
     End Sub
 
     Private Sub grdFactorData_Leave(sender As Object, e As EventArgs) Handles grdFactorData.Leave
-        If shtCurrSheet.IsEditing Then
+        If shtCurrSheet IsNot Nothing AndAlso shtCurrSheet.IsEditing Then
             shtCurrSheet.EndEdit(unvell.ReoGrid.EndEditReason.NormalFinish)
         End If
     End Sub
@@ -509,7 +509,7 @@ Public Class ucrFactor
 
     Private Sub shtCurrSheet_BeforeCellKeyDown(sender As Object, e As BeforeCellKeyDownEventArgs) Handles shtCurrSheet.BeforeCellKeyDown
         If e.KeyCode = unvell.ReoGrid.Interaction.KeyCode.Delete OrElse e.KeyCode = unvell.ReoGrid.Interaction.KeyCode.Back Then
-            MsgBox("Deleting cells is currently disabled. This feature will be included in future versions." & vbNewLine & "To remove a cell's value, replace the value with NA.", MsgBoxStyle.Information, "Cannot delete cells.")
+            MsgBox("Deleting cells is currently disabled. This feature will be included in future versions." & Environment.NewLine & "To remove a cell's value, replace the value with NA.", MsgBoxStyle.Information, "Cannot delete cells.")
             e.IsCancelled = True
         End If
     End Sub
@@ -554,7 +554,7 @@ Public Class ucrFactor
     Private Sub shtCurrSheet_AfterCellEdit(sender As Object, e As CellAfterEditEventArgs) Handles shtCurrSheet.AfterCellEdit
         If shtCurrSheet.ColumnHeaders(e.Cell.Column).Text = strLevelsName AndAlso e.NewData.ToString() <> "" Then
             If Not IsNumeric(e.NewData) Then
-                MsgBox("Invalid value: " & e.NewData.ToString() & vbNewLine & "Levels must be numeric values.", MsgBoxStyle.Exclamation, "Invalid Value")
+                MsgBox("Invalid value: " & e.NewData.ToString() & Environment.NewLine & "Levels must be numeric values.", MsgBoxStyle.Exclamation, "Invalid Value")
                 e.EndReason = EndEditReason.Cancel
             End If
         End If
